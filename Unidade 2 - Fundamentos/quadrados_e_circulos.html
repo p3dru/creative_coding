@@ -1,0 +1,39 @@
+<html>
+    <body>
+        
+        <canvas width="600" height="600"></canvas>
+
+        <script>
+            let canvas = document.querySelector("canvas"); 
+            /*
+            canvas é a variável, document é o objeto javascript que se refere ao documento html
+            querySelector seleciona um elemento do documento
+            "canvas" seleciona a tag 'canvas' descrita na linha 4
+            */
+            let context = canvas.getContext("2d");
+            /*
+            chama uma função de canvas = getContext
+            "2d" é o parâmetro do desenho, que no caso é 2d
+            */
+            context.fillStyle = "blue";                    //colore as bordas do quadrado
+            //context.fillRect(100, 100, 400, 400);        //ocultado para aparecer apenas as bordas          
+            /*
+            função com parâmetros x, y, largura e altura
+            começa o desenho em 0,0, move o inicio do desenho para 100 px para a direita,
+            100 px para baixo, 400 px para a direita e 400 px para baixo
+            */
+            context.lineWidth = 4;                         //define a grossura das bordas
+            context.beginPath();
+            context.rect(100, 100, 400, 400);
+            context.stroke();
+
+
+            //Para criar um circulo:
+            context.beginPath();
+            context.arc(300, 300, 100, 0, Math.PI * 2);
+            context.stroke();
+
+        </script>
+
+    </body>
+</html>
