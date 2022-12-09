@@ -9,6 +9,8 @@ no terminal.
 Para salvar, na aba onde a figura abrir dê um "CTRL + S"
 Para alterar onde as imagens serão salvas, no terminar,
 rode: canvas-sketch {nome do arquivo criado}.js --output={local onde deverá ser salvo}
+Para abrir arquivos já criados:
+canvas-sketch {nome do arquivo}.js
 */
 
 const canvasSketch = require('canvas-sketch');
