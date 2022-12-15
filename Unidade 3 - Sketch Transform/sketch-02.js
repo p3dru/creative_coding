@@ -34,12 +34,12 @@ const sketch = () => {
 			context.save();
 			context.translate(x, y);
 			context.rotate(-angle);
-      context.fillStyle = 'white';
+      			context.fillStyle = 'white';
 			context.scale(random.range(0.1, 2), random.range(0.2, 0.5));
 
 			context.beginPath();
 			context.rect(-w * 0.5, random.range(0, -h * 0.5), w, h);
-      context.fill();
+      			context.fill();
 			context.restore();
 
 			context.save();
@@ -49,10 +49,10 @@ const sketch = () => {
 			context.lineWidth = random.range(5, 20);
 
 			context.beginPath();
-      //cria arcos de tamanos e formas diversas
+      			//cria arcos de tamanhos e formas diversas
 			context.arc(0, 0, radius * random.range(0.7, 1.3), slice * random.range(1, -8), slice * random.range(1, 5));
-      context.strokeStyle = "#FF0000"                         //adiciona cor aos arcos             
-      context.stroke();
+      			context.strokeStyle = "#FF0000"                         //adiciona cor aos arcos             
+      			context.stroke();
 
 			context.restore();
 		}
