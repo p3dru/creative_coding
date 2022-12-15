@@ -4,45 +4,59 @@ const random = require('canvas-sketch-util/random');
 
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+	dimensions: [ 1080, 1080 ]
 };
 
 const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = 'black';
-    context.fillRect(0, 0, width, height);
+	return ({ context, width, height }) => {
+		context.fillStyle = 'black';
+		context.fillRect(0, 0, width, height);
 
-    context.fillStyle = 'white';
-    
-    const cx = width * 0.5;
-    const cy = height * 0.5;
-    const w = width * 0.01;
-    const h = height * 0.1;
+		context.fillStyle = 'white';
 
-    let x,y;                                       //seno e cosseno
+		const cx = width  * 0.5;
+		const cy = height * 0.5;
 
-    const num = 12;                               //define a quantidade de figuras a serem criadas
-    const radius = width * 0.3;
+		const w = width  * 0.01;
+		const h = height * 0.1;
+		let x, y;
 
-    for (let i = 0; i < num; i++){
-      const slice = math.degToRad(360/num);            //divide um círculo com a quantidade de figuras que definimos em num
-      const angle = slice * i;                     //cria a figura nos graus corretos com que foi iniciada
+		const num = random.range(12, 60);
+		const radius = width * 0.3;
 
-      x = radius * Math.sin(angle);
-      y = radius * Math.cos(angle);
+		for (let i = 0; i < num; i++) {
+			const slice = math.degToRad(360 / num);
+			const angle = slice * i;
 
-      context.save();                               //salva o estado do contexto
-      context.translate(cx, cy);
-      context.translate(x, y);                      //remapeia a posição 0,0 para o canvas
-      context.rotate(-angle);                        //gira o "local de desenho"
-      context.scale(random.range(1, 5), 1)//random.range(1, ));
+			x = cx + radius * Math.sin(angle);
+			y = cy + radius * Math.cos(angle);
 
-      context.beginPath();
-      context.rect(-w * 0.5, -h * 0.5, w, h);
+			context.save();
+			context.translate(x, y);
+			context.rotate(-angle);
+      context.fillStyle = 'white';
+			context.scale(random.range(0.1, 2), random.range(0.2, 0.5));
+
+			context.beginPath();
+			context.rect(-w * 0.5, random.range(0, -h * 0.5), w, h);
       context.fill();
-      context.restore();                            //retorna o path e salva os atributos
-    }
-  };
+			context.restore();
+
+			context.save();
+			context.translate(cx, cy);
+			context.rotate(-angle);
+
+			context.lineWidth = random.range(5, 20);
+
+			context.beginPath();
+      //cria arcos de tamanos e formas diversas
+			context.arc(0, 0, radius * random.range(0.7, 1.3), slice * random.range(1, -8), slice * random.range(1, 5));
+      context.strokeStyle = "#FF0000"                         //adiciona cor aos arcos             
+      context.stroke();
+
+			context.restore();
+		}
+	};
 };
 
 canvasSketch(sketch, settings);
