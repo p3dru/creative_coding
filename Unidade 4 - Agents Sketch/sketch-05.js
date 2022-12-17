@@ -69,7 +69,20 @@ const sketch = ({context, width, height}) => {
 
   return ({ context, width, height }) => {                //retorno da função sketch
     context.fillStyle = 'black';                          //dá a cor do local de desenho (o "papel")
-    context.fillRect(0, 0, width, height);               
+    context.fillRect(0, 0, width, height); 
+    
+    for (let i = 0; i < agents.length; i++){
+      const agent = agents[i];
+
+      for (let j = i + 1; j < agents.length; j++){
+        const other = agents[j];
+        context.beginPath();
+        context.moveTo(agent.pos.x, agent.pos.y);
+        context.lineTo(other.pos.x, other.pos.y);
+        context.strokeStyle = 'white';
+        context.stroke();
+      }
+    }
 
     agents.forEach(agent => {                             //para cada item do array
       agent.update();                                     //executa o método update que adiciona velocidade à posição 
