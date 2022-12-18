@@ -1,10 +1,20 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');      //para importar o random
+const math = require('canvas-sketch-util/math');          //para importarmos outras funções matemáticas
+
 
 class Vector{                                              //define a classe para criar novos pontos  
   constructor(x, y){                                      //criam um construtor com os valores das coordenadas dos pontos (x e y são os parâmetros passados)
     this.x = x;                                           //this serve para se referir ao escopo atual da classe          
     this.y = y;                                           //this serve para se referir ao escopo atual da classe
+  }
+
+  getDistance(v){                                         //sendo v um novo vetor (para calcular a distância)    
+    //as duas linhas abaixo buscam a distância do eixo x e do eixo y entre os dois vetores
+    const dx = this.x - v.x;
+    const dy = this.y - v.y;
+
+    return Math.sqrt((dx * dx) + (dy * dy));              //teorema de pitágoras para saber a distância real    
   }
 }
 
@@ -60,7 +70,7 @@ animate();
 const sketch = ({context, width, height}) => {
   const agents = [];                                      //cria um array vazio que irá armazenar todos os agentes
 
-  for (let i = 0; i < 60; i ++){                          //popula o array  
+  for (let i = 0; i < 100; i ++){                          //popula o array  
     const x = random.range(0, width);                     //recebem os valores aleatórios da coordenada x
     const y = random.range(0, height);                    //recebem os valores aleatórios da coordenada y
     
@@ -72,13 +82,21 @@ const sketch = ({context, width, height}) => {
     context.fillRect(0, 0, width, height); 
     
     for (let i = 0; i < agents.length; i++){
-      const agent = agents[i];
+      const agent = agents[i];                            //pega o agente atual  
 
       for (let j = i + 1; j < agents.length; j++){
-        const other = agents[j];
+        const other = agents[j];                          //pega um outro agente
+        const dist = agent.pos.getDistance(other.pos);    //pega a distância entre o vetor atual e o outro vetor a cada iteração continuamente  
+
+        if (dist > 200) continue;                         //se a distância for maior que 200, ele pula para a próxima iteração  
+
+        context.lineWidth = math.mapRange(dist, 0, 250, 10, 1);  //O mapRange mapeia a distância entre os pontos criados
+        //a linha acima deixa a linha mais grossa ou mais fina dependendo da distância dos pontos
+
         context.beginPath();
-        context.moveTo(agent.pos.x, agent.pos.y);
-        context.lineTo(other.pos.x, other.pos.y);
+        //as duas linhas abaixo fazem o desenho das linhas
+        context.moveTo(agent.pos.x, agent.pos.y);         //move a "caneta" para o começo da linha (primeiro agent)
+        context.lineTo(other.pos.x, other.pos.y);         //traça uma linha até o outro agent  
         context.strokeStyle = 'white';
         context.stroke();
       }
