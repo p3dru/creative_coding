@@ -1,12 +1,15 @@
 const canvasSketch = require('canvas-sketch');
+const random = require('canvas-sketch-util/random');
+const math = require('canvas-sketch-util/math');
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  dimensions: [ 1080, 1080 ],
+  animate: true,
 };
 
 const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = 'white';
+  return ({ context, width, height, frame }) => {
+    context.fillStyle = 'black';
     context.fillRect(0, 0, width, height);
 
     const cols = 10;
@@ -37,16 +40,26 @@ const sketch = () => {
       const w = cellw * 0.8;
       const h = cellh * 0.8;
 
+      const n = random.noise2D(x + frame * 10, y, 0.001);         //cria um ruido aleatório controlado (altera os estados para ocorrer o movimento)
+      const angle = n * Math.PI * 0.2;                            //cria o ângulo de rotação  
+
+      //const scale = (n + 1) / 2 * 30;
+      //const scale = (n * 0.5 + 0.5) * 30;
+
+      const scale = math.mapRange(n, -1, 1, 1, 30);              //pega números de espessura variável
+
       context.save();                                     //salva o contexto
       context.translate(x, y);                            //traduz o contexto de x,y (definidos nas linhas 34 e 35)
       context.translate(margx, margy);                   //traduz o contexto de margx, margey (definidos nas linhas 24 e 25)
       context.translate(cellw * 0.5, cellh * 0.5);        //traduz o contexto das linhas 24 e 25
+      context.rotate(angle);                              //rotaciona com base nos ângulos
 
-      context.lineWidth = 4;                              //define a grossura da linha para 4
+      context.lineWidth = scale;                              //define a grossura da linha com base nos números passados em scale
 
       context.beginPath();                                
       context.moveTo(w * -0.5, 0);                         //move a "caneta para o meio da célula"
       context.lineTo(w * 0.5, 0);                         //desenha a linha na célula
+      context.strokeStyle = 'white';
       context.stroke();
 
       context.restore();
