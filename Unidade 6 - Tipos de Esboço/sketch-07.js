@@ -4,6 +4,8 @@ const settings = {
   dimensions: [ 1080, 1080 ],
 };
 
+let manager;
+
 //define as propriedades do que será impresso
 let text = 'A';
 let fontSize = 1200;
@@ -41,4 +43,48 @@ const sketch = () => {
   };
 };
 
-canvasSketch(sketch, settings);
+
+//parametro do objeto para egar o texto toda vez que a tecça pressionada for solta
+const onKeyUp = (e) =>{
+  text = e.key.toUpperCase();       //para pegar letras maiúsaculas
+  manager.render();                 //para gerar o frame atual do código (da letra digitada)
+};
+
+//para atualizar a tela quando soltar a tecla
+document.addEventListener('keyup', onKeyUp);
+
+
+/*
+o async explicita uma função assíncrona (uma função assíncrona realiza um carregamento fora do 
+ciclo de execução normal, o síncrono). Ele faz um desvio na execução e carrega a parte,
+o await informa que é necessário esperar a execução da função assíncrona, para realizar voltar
+o estado síncrono novamente.
+Envolvemos o canvas sketch em uma função async para podemos alterar o estado dela a cada nova 
+alteração percebida pela linha 54.
+*/
+const start = async () => {
+  manager = await canvasSketch(sketch, settings);
+};
+
+//inicia a função start na chamada da função que inicia o manager que 
+//é a função CanvasSketch em si e daí ai renderiza e inicia o desenho
+start();                            
+
+/*
+const url = 'https://picsum/photos/200';
+const loadMeSomeImage = (url) =>{
+  return new Promise((resolve, reject) => {
+    const img = new Image(img);
+    img.onerror = () => reject();
+    img.src = url;
+  });
+};
+
+const start = async () => {
+  const img = await loadMeSomeImage(url);
+  console.log('image width', img.width);
+  console.log('this line');
+};
+
+start();
+*/
